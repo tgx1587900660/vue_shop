@@ -48,20 +48,19 @@ export default {
   },
   methods: {
     loginFormReset() {
-      // 添加方法重置表单内容
+      // 重置表单内容 elementUI提供resetFields()方法
       // console.log(this.$refs.loginFormRef)
       this.$refs.loginFormRef.resetFields()
     },
     login() {
-      // 登录验证
+      // 登录验证  elementUI提供validate()方法
       this.$refs.loginFormRef.validate(async (valid) => {
-        // console.log(valid);表单格式是否合法
+        // console.log(valid); //是否合法，布尔值
         if (!valid) return
         const { data: res } = await this.$http.post('login', this.loginForm)
         // console.log(res.meta.status); // 状态码
-        if (res.meta.status !== 200) return this.$message.error('登录失败')
+        if (res.meta.status !== 200) return this.$message.error('登录失败') // error()方法为el提供
         this.$message.success('登录成功')
-        // console.log(res);
         window.sessionStorage.setItem('token', res.data.token)
         this.$router.push('/home')
       })
