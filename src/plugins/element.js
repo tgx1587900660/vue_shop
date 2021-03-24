@@ -5,7 +5,7 @@ import {
   Main, Menu, Submenu, MenuItem,
   Breadcrumb, BreadcrumbItem, Card, Row, Col,
   Table, TableColumn, Switch, Tooltip, Pagination, Dialog,
-  MessageBox, Tag, Tree, Select, Option
+  MessageBox, Tag, Tree, Select, Option, Cascader
 } from 'element-ui'
 
 Vue.use(Aside)
@@ -15,6 +15,7 @@ Vue.use(BreadcrumbItem)
 Vue.use(Container)
 Vue.use(Col)
 Vue.use(Card)
+Vue.use(Cascader)
 Vue.use(Dialog)
 Vue.use(Form)
 Vue.use(FormItem)
