@@ -59,7 +59,9 @@ export default {
         if (!valid) return
         const { data: res } = await this.$http.post('login', this.loginForm)
         // console.log(res.meta.status); // 状态码
-        if (res.meta.status !== 200) return this.$message.error('登录失败') // error()方法为el提供
+        if (res.meta.status !== 200) {
+          return this.$message.error('登录失败') // error()方法为el提供
+        }
         this.$message.success('登录成功')
         window.sessionStorage.setItem('token', res.data.token)
         this.$router.push('/home')

@@ -79,7 +79,7 @@
             <el-button @click="editUser(slotProps.row.id)" type="primary" icon="el-icon-edit" size='mini'></el-button>
             <el-button @click="removeUserById(slotProps.row.id)" type="danger" icon="el-icon-delete"  size='mini'></el-button>
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable='false'>
-              <el-button type="warning" icon="el-icon-setting"  size='mini'></el-button>
+              <el-button type="warning" icon="el-icon-setting"  size='mini' @click="getRoles(slotProps.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -88,6 +88,23 @@
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryData.pagenum" :page-sizes="[1, 2, 5, 10]" :page-size="queryData.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </el-card>
+    <!-- 分配角色对话框 -->
+    <el-dialog title="分配角色" :visible.sync="setRolesDialogVisible" width="50%" @close="setRolesDialogClosed">
+      <div>
+        <p>当前的用户：{{userInfo.username}}</p>
+        <p>当前的角色：{{userInfo.role_name}}</p>
+        <p>分配新角色：
+          <el-select v-model="selectedRoleId" placeholder="请选择">
+            <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRolesDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setRoles">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -108,7 +125,7 @@ export default {
       queryData: {
         query: '', // 查询参数
         pagenum: 1, // 当前页
-        pagesize: 2 // 每页几条
+        pagesize: 5 // 每页几条
       },
       userList: [],
       total: 0, // 总页数
@@ -161,7 +178,15 @@ export default {
           { required: true, message: '手机号不能为空' },
           { validator: checkMobile, trigger: 'blur' }
         ]
-      }
+      },
+      // 控制分配角色对话框
+      setRolesDialogVisible: false,
+      // 角色分配对话框信息渲染
+      userInfo: {},
+      // 所有角色列表
+      roleList: [],
+      // 选择要分配的角色ID
+      selectedRoleId: ''
     }
   },
   methods: {
@@ -230,7 +255,7 @@ export default {
     },
     // 查询要修改的用户信息
     async editUser(id) {
-      // 据id查用户存在 this.editForm
+      // 据id查用户查询 this.editForm
       const { data: res } = await this.$http.get('users/' + id)
       if (res.meta.status !== 200) {
         return this.$message.error('获取用户失败')
@@ -277,7 +302,7 @@ export default {
           type: 'warning'
         }
       ).catch((err) => err)
-      console.log(confirmResult)
+      // console.log(confirmResult)
       if (confirmResult === 'cancel') {
         return this.$message.info('取消删除用户')
       }
@@ -288,9 +313,49 @@ export default {
         return this.$message.error('删除用户失败')
       }
       // console.log(res)
-      // 关闭 刷新 提示
+      // 刷新 提示
       this.getUserList()
       this.$message.success('修改成功')
+    },
+    // 获取将要分配角色的用户信息，并渲染角色列表
+    async getRoles(userInfo) {
+      this.userInfo = userInfo
+      const { data: res } = await this.$http.get('roles')
+      if (res.meta.status !== 200) {
+        return this.$message.error('获取用户角色列表失败')
+      }
+
+      this.roleList = res.data
+      // console.log(this.userInfo)
+      this.setRolesDialogVisible = true
+    },
+    // 设置用户角色
+    async setRoles() {
+      // users/:id/role 参数：用户ID、角色ID
+      // console.log(this.selectedRoleId)
+      if (!this.selectedRoleId) {
+        return this.$message.error('请选择要设置的角色')
+      }
+      const { data: res } = await this.$http.put(
+        `users/${this.userInfo.id}/role`,
+        {
+          rid: this.selectedRoleId
+        }
+      )
+      // console.log(res)
+      if (res.meta.status !== 200) {
+        return this.$message.error('设置用户角色失败')
+      }
+
+      this.$message.success('设置用户角色成功')
+      this.getUserList()
+      this.setRolesDialogVisible = false
+    },
+    // 监听设置用户角色对话框关闭事件
+    setRolesDialogClosed() {
+      // 清空选择框
+      this.selectedRoleId = ''
+      this.userInfo = {}
     }
   },
   // 页面被创造时
