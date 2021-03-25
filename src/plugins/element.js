@@ -5,10 +5,12 @@ import {
   Main, Menu, Submenu, MenuItem,
   Breadcrumb, BreadcrumbItem, Card, Row, Col,
   Table, TableColumn, Switch, Tooltip, Pagination, Dialog,
-  MessageBox, Tag, Tree, Select, Option, Cascader
+  MessageBox, Tag, Tree, Select, Option, Cascader, Alert,
+  TabPane, Tabs
 } from 'element-ui'
 
 Vue.use(Aside)
+Vue.use(Alert)
 Vue.use(Button)
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
@@ -35,6 +37,8 @@ Vue.use(TableColumn)
 Vue.use(Tooltip)
 Vue.use(Tag)
 Vue.use(Tree)
+Vue.use(TabPane)
+Vue.use(Tabs)
 
 // 全局配置 Message 弹窗（有error、success方法）
 Vue.prototype.$message = Message
