@@ -9,8 +9,15 @@ import './assets/css/global.css'
 // 引入第三方字体图标 阿里icon
 import './assets/fonts/iconfont.css'
 
-// 引入表格依赖项 table-tree
+// 引入表格树依赖项 vue-table-with-tree-grid
 import TableTree from 'vue-table-with-tree-grid'
+
+// 引入富文本编辑器 vue-quill-editor
+import VueQuillEditor from 'vue-quill-editor'
+// 引入富文本编辑器样式 require styles
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 
 // 引入axios,并配置全局
 import axios from 'axios'
@@ -28,8 +35,28 @@ Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 
-// 全局注册 vue-table-with-tree-grid
+// 全局注册运行依赖表格树插件：vue-table-with-tree-grid
 Vue.component('tree-table', TableTree)
+
+// 全局注册运行依赖富文本编辑器：vue-quill-editor
+Vue.use(VueQuillEditor)
+
+// 全局注册一个过滤器，处理时间格式
+Vue.filter('dateFormat', function (originTime) {
+  const dt = new Date(originTime)
+  const y = dt.getFullYear()
+  let m = (dt.getMonth() + 1)
+  m = m < 10 ? '0' + m : m
+  const d = dt.getDate()
+
+  let hh = dt.getHours()
+  hh = hh < 10 ? '0' + hh : hh
+  let mm = dt.getMinutes()
+  mm = mm < 10 ? '0' + mm : mm
+  let ss = dt.getSeconds()
+  ss = ss < 10 ? '0' + ss : ss
+  return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+})
 
 // 把路由挂在到实例对象中
 new Vue({

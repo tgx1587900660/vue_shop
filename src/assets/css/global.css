@@ -23,3 +23,10 @@ body,
 .el-pagination {
   margin-top: 15px;
 }
+.el-steps {
+  margin: 15px 0;
+}
+
+.ql-container {
+  min-height: 300px;
+}
