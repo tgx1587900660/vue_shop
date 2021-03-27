@@ -45,7 +45,7 @@
             <el-form-item :label="item.attr_name" :key="item.attr_id" v-for="item in manyTableData">
               <!-- {{item.attr_vals}} -->
               <el-checkbox-group v-model="item.attr_vals">
-                <el-checkbox border :label="item2" :key="i" v-for="(item2,i) in item.attr_vals"></el-checkbox>
+                <el-checkbox border :label="item2" :key="i" v-for="(item2, i) in item.attr_vals"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
           </el-tab-pane>
@@ -58,8 +58,11 @@
           <!-- 图片上传栏 -->
           <el-tab-pane label="商品图片" name="3">
             <!-- ⭐upload 组件需要手动指定请求头token -->
-            <el-upload :headers="uploadObj" :action="uploadURL" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="uploadSuccess" list-type="picture"><el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            <el-upload :headers="uploadObj" :action="uploadURL" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="uploadSuccess" list-type="picture">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">
+                只能上传jpg/png文件，且不超过500kb
+              </div>
             </el-upload>
           </el-tab-pane>
           <el-tab-pane label="商品内容" name="4">
@@ -71,7 +74,7 @@
     </el-card>
     <!-- 图片预览对话框 -->
     <el-dialog title="图片预览" :visible.sync="picDialogVisible" width="50%">
-      <img :src="previewPath" alt="" class="previewImg">
+      <img :src="previewPath" alt="" class="previewImg" />
     </el-dialog>
   </div>
 </template>
@@ -270,26 +273,43 @@ export default {
             attr_value: item.attr_vals
           })
         })
-        // 2、处理属性 goods_cat (数组转为字符串，因为他是动态绑定的数组，但是需要以字符串形式传递)
-        //    也可以对 this.addForm 进行深拷贝，再转换 goods_cat ，再把拷贝后的对象传入请求参数中
-        // console.log(this.addForm)// 需要在传参中处理goods_cat
-        const { data: res } = await this.$http.post('goods', {
-          goods_name: this.addForm.goods_name,
-          goods_cat: this.addForm.goods_cat.join(','),
-          goods_price: this.addForm.goods_price,
-          goods_number: this.addForm.goods_number,
-          goods_weight: this.addForm.goods_weight,
-          goods_introduce: this.addForm.goods_introduce,
-          pics: this.addForm.pics,
-          attrs: this.addForm.attrs
-        })
 
+        // 2、处理属性 goods_cat (数组转为字符串，因为他是动态绑定的数组，但是需要以字符串形式传递)
+        // console.log(this.addForm)
+        //  对 this.addForm 进行深拷贝
+        const newform = {}
+        this.deepCopy(newform, this.addForm)
+        newform.goods_cat = newform.goods_cat.join(',') // 在传参中处理 goods_cat
+        // console.log(newform)
+        const { data: res } = await this.$http.post('goods', newform)
         if (res.meta.status !== 201) {
           return this.$message.error('添加商品失败')
         }
 
         this.$router.push('/goods')
       })
+    },
+    // 用于对象深拷贝函数
+    deepCopy(newobj, oldboj) {
+      // 1.首先循环要被拷贝的对象
+      for (var k in oldboj) {
+        // 2.用临时值 item 存储 oldboj.k 属性值
+        var item = oldboj[k]
+        // 4.如果当前属性 item 是数组(必须在前，因为数组也是对象),
+        if (item instanceof Array) {
+          // 就让当前 newobj.k = [] 为空数组，并继续递归，直到全部是最外层为止
+          newobj[k] = []
+          this.deepCopy(newobj[k], item)
+          // 5.如果当前属性 item 是对象,
+        } else if (item instanceof Object) {
+          // 就让当前 newobj.k = {} 为空对象，并继续递归，直到全部是最外层为止
+          newobj[k] = {}
+          this.deepCopy(newobj[k], item)
+        } else {
+          // 3.如果是第一层，则赋值 newobj.k = oldboj.k
+          newobj[k] = item
+        }
+      }
     }
   },
   computed: {
