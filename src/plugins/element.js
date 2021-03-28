@@ -6,8 +6,14 @@ import {
   Breadcrumb, BreadcrumbItem, Card, Row, Col,
   Table, TableColumn, Switch, Tooltip, Pagination, Dialog,
   MessageBox, Tag, Tree, Select, Option, Cascader, Alert,
-  TabPane, Tabs, Steps, Step, CheckboxGroup, Checkbox, Upload
+  TabPane, Tabs, Steps, Step, CheckboxGroup, Checkbox, Upload,
+  // 如果版本过低，则需要自己导入 timeline时间线 ui组件
+  Timeline, TimelineItem
 } from 'element-ui'
+
+// 如果版本过低，则需要自己导入 timeline时间线 ui组件
+// import Timeline from './timeline/index.js'
+// import TimelineItem from './timeline-item/index.js'
 
 Vue.use(Aside)
 Vue.use(Alert)
@@ -43,6 +49,8 @@ Vue.use(Tag)
 Vue.use(Tree)
 Vue.use(TabPane)
 Vue.use(Tabs)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 Vue.use(Upload)
 
 // 全局配置 Message 弹窗（有error、success方法）
