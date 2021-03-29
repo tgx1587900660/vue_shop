@@ -19,14 +19,25 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
+// (优化页面加载进度)导入 Nprogress进度条 插件的js和css
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 // 引入axios,并配置全局
 import axios from 'axios'
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 
-// 设置 axios 请求头
+// 设置 axios 请求头（优化开始加载进度条）
 axios.interceptors.request.use(config => {
+  NProgress.start() // 进度条开始
   config.headers.Authorization = window.sessionStorage.getItem('token')
   // console.log(config)
+  return config
+})
+
+// 设置 axios 响应头（优化结束加载进度条）
+axios.interceptors.response.use(config => {
+  NProgress.done() // 进度条结束
   return config
 })
 
