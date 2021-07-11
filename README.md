@@ -25,10 +25,6 @@ npm run lint
 ```
 
 ### Customize configuration
-<<<<<<< HEAD
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
-=======
 See [Configuration Reference]
 
 ### images of this project
@@ -38,4 +34,3 @@ See [Configuration Reference]
 ![report](https://images.gitee.com/uploads/images/2021/0330/174923_3bfb4734_8026346.png "report.png")
 ![rights](https://images.gitee.com/uploads/images/2021/0330/174938_50cedf89_8026346.png "rights.png")
 ![users](https://images.gitee.com/uploads/images/2021/0330/174946_b07fb60f_8026346.png "users.png")
->>>>>>> b184355e0c56dc052054e6dccdef8425f214f230
