@@ -22,19 +22,19 @@
         <el-table-column prop="order_number" label="商品编号"></el-table-column>
         <el-table-column prop="order_price" label="价格" width="100"></el-table-column>
         <el-table-column prop="pay_status" label="是否付款" width="80">
-          <template v-slot:default='slotProps'>
-            <el-tag type="danger" v-if="slotProps.row.pay_status=='0'">未付款</el-tag>
+          <template v-slot:default="slotProps">
+            <el-tag type="danger" v-if="slotProps.row.pay_status == '0'">未付款</el-tag>
             <el-tag type="success" v-else>已付款</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="is_send" label="是否发货" width="100">
-          <template v-slot:default='slotProps'>
-            {{slotProps.row.is_send}}
+          <template v-slot:default="slotProps">
+            {{ slotProps.row.is_send }}
           </template>
         </el-table-column>
         <el-table-column prop="create_time" label="下单时间" width="180">
-          <template v-slot:default='slotProps'>
-            {{slotProps.row.create_time|dateFormat}}
+          <template v-slot:default="slotProps">
+            {{ slotProps.row.create_time | dateFormat }}
           </template>
         </el-table-column>
         <el-table-column prop="order_number" label="操作" width="120">
@@ -45,8 +45,7 @@
         </el-table-column>
       </el-table>
       <!-- 分页区 -->
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 15]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 15]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
     </el-card>
     <!-- 操作对话框 -->
     <el-dialog title="修改地址" :visible.sync="addressDialogVisible" width="50%" @close="addressDialogClosed">
@@ -69,7 +68,7 @@
       <!-- 时间线 -->
       <el-timeline>
         <el-timeline-item v-for="(item, index) in progressInfo" :key="index" :timestamp="item.time">
-          {{item.context}}
+          {{ item.context }}
         </el-timeline-item>
       </el-timeline>
     </el-dialog>
@@ -100,9 +99,7 @@ export default {
       },
       addressFormRules: {
         address1: [{ required: true, message: '请选择地址', trigger: 'blur' }],
-        address2: [
-          { required: true, message: '请输入详细地址', trigger: 'blur' }
-        ]
+        address2: [{ required: true, message: '请输入详细地址', trigger: 'blur' }]
       },
       // 省市区数据
       citydata,
@@ -169,8 +166,7 @@ export default {
           {
             time: '2018-05-10 08:23:00',
             ftime: '2018-05-10 08:23:00',
-            context:
-              '[北京市]北京海淀育新小区营业点派件员 顺丰速运 95338正在为您派件',
+            context: '[北京市]北京海淀育新小区营业点派件员 顺丰速运 95338正在为您派件',
             location: ''
           },
           {
@@ -182,8 +178,7 @@ export default {
           {
             time: '2018-05-10 02:03:00',
             ftime: '2018-05-10 02:03:00',
-            context:
-              '快件在[北京顺义集散中心]已装车,准备发往 [北京海淀育新小区营业点]',
+            context: '快件在[北京顺义集散中心]已装车,准备发往 [北京海淀育新小区营业点]',
             location: ''
           },
           {
@@ -233,11 +228,11 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
-  // 如果版本过低，则需要自己导入 timeline时间线 ui组件
-  // @import '../../plugins/timeline/timeline.css';
-  // @import '../../plugins/timeline-item/timeline-item.css';
-  .el-cascader {
-    width: 100%;
-  }
+<style lang="less" scoped>
+// 如果版本过低，则需要自己导入 timeline时间线 ui组件
+// @import '../../plugins/timeline/timeline.css';
+// @import '../../plugins/timeline-item/timeline-item.css';
+.el-cascader {
+  width: 100%;
+}
 </style>

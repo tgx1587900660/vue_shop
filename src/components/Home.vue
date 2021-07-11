@@ -3,7 +3,7 @@
     <!-- 头部区域 -->
     <el-header>
       <div>
-        <img src="../assets/heima.png" alt="">
+        <img src="../assets/logo.png" alt="" />
         <span>电商后台管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
@@ -14,18 +14,18 @@
       <el-aside :width="isCollapse ? '64px' : '200px'">
         <div class="button-toggle" @click="toggleCollapse">| | |</div>
         <!-- 一级菜单 -->
-        <el-menu background-color="#313743" text-color="#fff" active-text-color="#438ace" unique-opened :collapse="isCollapse" :collapse-transition="false" router :default-active="activePath">
-          <el-submenu :index="item.id + ''" :key='item.id' v-for='item in menuList'>
+        <el-menu background-color="#0e549b" text-color="#fff" active-text-color="#438ace" unique-opened :collapse="isCollapse" :collapse-transition="false" router :default-active="activePath">
+          <el-submenu :index="item.id + ''" :key="item.id" v-for="item in menuList">
             <template slot="title">
               <i :class="iconsObj[item.id]"></i>
-              <span>{{item.authName}}</span>
+              <span>{{ item.authName }}</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item :index="'/' + subitem.path" :key='subitem.id' v-for='subitem in item.children' @click="saveNavStatus('/' + subitem.path)">
+            <el-menu-item :index="'/' + subitem.path" :key="subitem.id" v-for="subitem in item.children" @click="saveNavStatus('/' + subitem.path)">
               <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span>{{subitem.authName}}</span>
-            </template>
+                <i class="el-icon-menu"></i>
+                <span>{{ subitem.authName }}</span>
+              </template>
             </el-menu-item>
           </el-submenu>
         </el-menu>
@@ -93,53 +93,53 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .home-contaner {
-    height: 100%;
-  }
+.home-contaner {
+  height: 100%;
+}
 
-  .el-header {
-    background-color: #363d40;
-    padding-left: 0;
+.el-header {
+  background-color: #363d40;
+  padding-left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  font-size: 20px;
+
+  & > div {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+
+    span {
+      margin-left: 10px;
+    }
+  }
+}
+
+.el-aside {
+  background-color: #313743;
+
+  .button-toggle {
     color: #fff;
-    font-size: 20px;
-
-    & > div {
-      display: flex;
-      align-items: center;
-
-      span {
-        margin-left: 10px;
-      }
-    }
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0.2em;
+    line-height: 24px;
+    font-size: 10px;
+    background-color: #495064;
+    cursor: pointer;
   }
 
-  .el-aside {
-    background-color: #313743;
-
-    .button-toggle {
-      color: #fff;
-      width: 100%;
-      text-align: center;
-      letter-spacing: 0.2em;
-      line-height: 24px;
-      font-size: 10px;
-      background-color: #495064;
-      cursor: pointer;
-    }
-
-    .iconfont {
-      margin-right: 15px;
-    }
-
-    .el-menu {
-      border-right: none;
-    }
+  .iconfont {
+    margin-right: 15px;
   }
 
-  .el-main {
-    background-color: #e9edf1;
+  .el-menu {
+    border-right: none;
   }
+}
+
+.el-main {
+  background-color: #e9edf1;
+}
 </style>

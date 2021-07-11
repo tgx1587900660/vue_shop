@@ -11,7 +11,7 @@
       <!-- 添加角色按钮 -->
       <el-row>
         <el-col>
-          <el-button type="primary" @click="isAddVisible=true">添加角色</el-button>
+          <el-button type="primary" @click="isAddVisible = true">添加角色</el-button>
         </el-col>
       </el-row>
       <!-- 添加角色对话框 -->
@@ -56,25 +56,25 @@
         <!-- 展开列 -->
         <el-table-column type="expand" label="展开" width="50px">
           <template v-slot:default="slotProps">
-            <el-row :key="item1.id" v-for="(item1,i1) in slotProps.row.children" :class="['bdbottom', i1 === 0 ? 'bdtop' : '', 'vcenter']">
+            <el-row :key="item1.id" v-for="(item1, i1) in slotProps.row.children" :class="['bdbottom', i1 === 0 ? 'bdtop' : '', 'vcenter']">
               <!-- <pre>{{slotProps.row}}</pre> -->
               <!-- 一级权限 -->
               <el-col :span="5">
-                <el-tag @close="removeTagById(slotProps.row,item1.id)" closable>{{item1.authName}}</el-tag>
+                <el-tag @close="removeTagById(slotProps.row, item1.id)" closable>{{ item1.authName }}</el-tag>
                 <i class="el-icon-caret-right"></i>
               </el-col>
               <!-- 二、三级权限 -->
               <el-col :span="19">
-                <el-row :key="item2.id" v-for="(item2,i2) in item1.children" :class="[i2 === 0 ? '' : 'bdtop', 'vcenter']">
+                <el-row :key="item2.id" v-for="(item2, i2) in item1.children" :class="[i2 === 0 ? '' : 'bdtop', 'vcenter']">
                   <!-- 二级权限 -->
                   <el-col :span="6">
                     <!-- <pre>{{item2.authName}}</pre> -->
-                    <el-tag type="success" @close="removeTagById(slotProps.row,item2.id)" closable>{{item2.authName}}</el-tag>
+                    <el-tag type="success" @close="removeTagById(slotProps.row, item2.id)" closable>{{ item2.authName }}</el-tag>
                     <i class="el-icon-caret-right"></i>
                   </el-col>
                   <!-- 三级权限 -->
                   <el-col :span="18">
-                    <el-tag @close="removeTagById(slotProps.row,item3.id)" closable :key="item3.id" v-for="(item3) in item2.children" type="warning">{{item3.authName}}</el-tag>
+                    <el-tag @close="removeTagById(slotProps.row, item3.id)" closable :key="item3.id" v-for="item3 in item2.children" type="warning">{{ item3.authName }}</el-tag>
                   </el-col>
                 </el-row>
               </el-col>
@@ -86,7 +86,7 @@
         <el-table-column prop="roleName" label="角色名称"></el-table-column>
         <el-table-column prop="roleDesc" label="角色描述"></el-table-column>
         <el-table-column label="操作" width="285px">
-          <template  v-slot:default="slotProps">
+          <template v-slot:default="slotProps">
             <el-button size="mini" type="primary" icon="el-icon-edit" @click="editRoles(slotProps.row.id)">编辑</el-button>
             <el-button size="mini" type="danger" icon="el-icon-delete" @click="removeRole(slotProps.row.id)">删除</el-button>
             <el-button size="mini" type="warning" icon="el-icon-setting" @click="getRightsList(slotProps.row)">分配权限</el-button>
@@ -202,7 +202,7 @@ export default {
     },
     // 点击确定添加角色
     addRoles() {
-      this.$refs.addRolesFormRef.validate(async (valid) => {
+      this.$refs.addRolesFormRef.validate(async valid => {
         if (!valid) return // 预验证
 
         const { data: res } = await this.$http.post('roles', this.addRolesForm)
@@ -231,18 +231,15 @@ export default {
     },
     // id修改角色信息
     modifyRoles() {
-      this.$refs.editRolesFormRef.validate(async (valid) => {
+      this.$refs.editRolesFormRef.validate(async valid => {
         if (!valid) return
 
         // 格式正确发起修改
         // console.log(this.editRolesForm.roleId)
-        const { data: res } = await this.$http.put(
-          'roles/' + this.editRolesForm.roleId,
-          {
-            roleName: this.editRolesForm.roleName,
-            roleDesc: this.editRolesForm.roleDesc
-          }
-        )
+        const { data: res } = await this.$http.put('roles/' + this.editRolesForm.roleId, {
+          roleName: this.editRolesForm.roleName,
+          roleDesc: this.editRolesForm.roleDesc
+        })
         // console.log(res.meta.status)
         if (res.meta.status !== 200) {
           return this.$message.error('获取角色失败')
@@ -256,15 +253,11 @@ export default {
     // id 删除角色
     async removeRole(id) {
       console.log(id)
-      const confirmResult = await this.$confirm(
-        '此操作将永久删除该角色, 是否继续?',
-        '警告',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).catch((err) => err)
+      const confirmResult = await this.$confirm('此操作将永久删除该角色, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
       // console.log(confirmResult)
       if (confirmResult === 'cancel') {
         return this.$message.info('已取消删除角色')
@@ -282,23 +275,17 @@ export default {
     },
     // id删除权限
     async removeTagById(role, rightsId) {
-      const confirmResult = await this.$confirm(
-        '此操作将永久删除该用户, 是否继续?',
-        '警告',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).catch((err) => err)
+      const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
       // console.log(confirmResult)
       if (confirmResult !== 'confirm') {
         return this.$message.info('取消删除权限')
       }
       // console.log(role, rightsId)
-      const { data: res } = await this.$http.delete(
-        `roles/${role.id}/rights/${rightsId}`
-      )
+      const { data: res } = await this.$http.delete(`roles/${role.id}/rights/${rightsId}`)
       console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('删除权限失败')
@@ -330,7 +317,7 @@ export default {
         return arr.push(node.id)
       }
       // 如果有 children ，则用 forEach 遍历他(node)的children ，调用递归函数getLeafKeys
-      node.children.forEach((item) => {
+      node.children.forEach(item => {
         this.getLeafKeys(item, arr)
       })
     },
@@ -347,12 +334,9 @@ export default {
       // console.log(this.$refs.treeRef.getHalfCheckedKeys()) // 获取所有半选中权限的ID
       var halfCheckedKeys = this.$refs.treeRef.getHalfCheckedKeys()
       var rids = [...halfCheckedKeys, ...checkedKeys].join(',')
-      // console.log(rids)
+      console.log(rids)
 
-      const { data: res } = await this.$http.post(
-        `roles/${this.roleId}/rights`,
-        { rids }
-      )
+      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, { rids })
       // console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('更新权限失败')
@@ -371,17 +355,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .el-tag {
-    margin: 15px;
-  }
-  .bdbottom {
-    border-bottom: 1px solid #000;
-  }
-  .bdtop {
-    border-top: 1px solid #000;
-  }
-  .vcenter {
-    display: flex;
-    align-items: center;
-  }
+.el-tag {
+  margin: 15px;
+}
+.bdbottom {
+  border-bottom: 1px solid #000;
+}
+.bdtop {
+  border-top: 1px solid #000;
+}
+.vcenter {
+  display: flex;
+  align-items: center;
+}
 </style>

@@ -16,7 +16,7 @@
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary" @click="isAddVisible=true">添加用户</el-button>
+          <el-button type="primary" @click="isAddVisible = true">添加用户</el-button>
         </el-col>
       </el-row>
       <!-- 添加用户对话框 -->
@@ -27,7 +27,7 @@
             <el-input v-model="ruleForm.username"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input v-model="ruleForm.password"  type="password"></el-input>
+            <el-input v-model="ruleForm.password" type="password"></el-input>
           </el-form-item>
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="ruleForm.email"></el-input>
@@ -76,27 +76,26 @@
         </el-table-column>
         <el-table-column label="操作" width="180px">
           <template v-slot:default="slotProps">
-            <el-button @click="editUser(slotProps.row.id)" type="primary" icon="el-icon-edit" size='mini'></el-button>
-            <el-button @click="removeUserById(slotProps.row.id)" type="danger" icon="el-icon-delete"  size='mini'></el-button>
-            <el-tooltip effect="dark" content="分配角色" placement="top" :enterable='false'>
-              <el-button type="warning" icon="el-icon-setting"  size='mini' @click="getRoles(slotProps.row)"></el-button>
+            <el-button @click="editUser(slotProps.row.id)" type="primary" icon="el-icon-edit" size="mini"></el-button>
+            <el-button @click="removeUserById(slotProps.row.id)" type="danger" icon="el-icon-delete" size="mini"></el-button>
+            <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+              <el-button type="warning" icon="el-icon-setting" size="mini" @click="getRoles(slotProps.row)"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
       <!-- 页码 -->
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryData.pagenum" :page-sizes="[1, 2, 5, 10]" :page-size="queryData.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryData.pagenum" :page-sizes="[1, 2, 5, 10]" :page-size="queryData.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
     </el-card>
     <!-- 分配角色对话框 -->
     <el-dialog title="分配角色" :visible.sync="setRolesDialogVisible" width="50%" @close="setRolesDialogClosed">
       <div>
-        <p>当前的用户：{{userInfo.username}}</p>
-        <p>当前的角色：{{userInfo.role_name}}</p>
-        <p>分配新角色：
+        <p>当前的用户：{{ userInfo.username }}</p>
+        <p>当前的角色：{{ userInfo.role_name }}</p>
+        <p>
+          分配新角色：
           <el-select v-model="selectedRoleId" placeholder="请选择">
-            <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
-            </el-option>
+            <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id"> </el-option>
           </el-select>
         </p>
       </div>
@@ -206,9 +205,7 @@ export default {
     // 用户状态更改
     async userStatusChanged(userInfo) {
       // console.log(userInfo)
-      const { data: res } = await this.$http.put(
-        `users/${userInfo.id}/state/${userInfo.mg_state}`
-      )
+      const { data: res } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
       // console.log(res.meta)
       if (res.meta.status !== 200) {
         return this.$message.error('更改用户状态失败')
@@ -233,7 +230,7 @@ export default {
     },
     // 添加用户
     addUser() {
-      this.$refs.ruleFormRef.validate(async (valid) => {
+      this.$refs.ruleFormRef.validate(async valid => {
         // 格式预验证
         if (!valid) return
 
@@ -268,16 +265,13 @@ export default {
     },
     modifyUser() {
       // console.log(id)
-      this.$refs.editFormRef.validate(async (valid) => {
+      this.$refs.editFormRef.validate(async valid => {
         // 格式预验证
         if (!valid) return
-        const { data: res } = await this.$http.put(
-          'users/' + this.editForm.id,
-          {
-            email: this.editForm.email,
-            mobile: this.editForm.mobile
-          }
-        )
+        const { data: res } = await this.$http.put('users/' + this.editForm.id, {
+          email: this.editForm.email,
+          mobile: this.editForm.mobile
+        })
         // 成功后刷新并关窗口 console.log(res.meta.status)
         if (res.meta.status !== 200) {
           return this.$message.error('修改失败')
@@ -293,15 +287,11 @@ export default {
       // console.log(id)
       // 如过确定，返回字符串 confirm
       // 如过取消，返回字符串 cancel
-      const confirmResult = await this.$confirm(
-        '此操作将永久删除该用户, 是否继续?',
-        '警告',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).catch((err) => err)
+      const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
       // console.log(confirmResult)
       if (confirmResult === 'cancel') {
         return this.$message.info('取消删除用户')
@@ -336,12 +326,9 @@ export default {
       if (!this.selectedRoleId) {
         return this.$message.error('请选择要设置的角色')
       }
-      const { data: res } = await this.$http.put(
-        `users/${this.userInfo.id}/role`,
-        {
-          rid: this.selectedRoleId
-        }
-      )
+      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, {
+        rid: this.selectedRoleId
+      })
       // console.log(res)
       if (res.meta.status !== 200) {
         return this.$message.error('设置用户角色失败')
@@ -366,5 +353,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

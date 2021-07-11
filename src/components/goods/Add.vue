@@ -102,18 +102,10 @@ export default {
       },
       // 提交表单的验证规则
       addFormRules: {
-        goods_name: [
-          { required: true, message: '请输入商品名称', trigger: 'blur' }
-        ],
-        goods_price: [
-          { required: true, message: '请输入商品价格', trigger: 'blur' }
-        ],
-        goods_weight: [
-          { required: true, message: '请输入商品重量', trigger: 'blur' }
-        ],
-        goods_number: [
-          { required: true, message: '请输入商品数量', trigger: 'blur' }
-        ],
+        goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+        goods_price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
+        goods_weight: [{ required: true, message: '请输入商品重量', trigger: 'blur' }],
+        goods_number: [{ required: true, message: '请输入商品数量', trigger: 'blur' }],
         goods_cat: [{ required: true, message: '请选择分类', trigger: 'blur' }]
       },
       // 级联框商品分类列表
@@ -183,21 +175,18 @@ export default {
 
       // 如果进入商品动态参数栏'1'，查询参数列表
       if (this.activeIndex === '1') {
-        const { data: res } = await this.$http.get(
-          `categories/${this.cateId}/attributes`,
-          {
-            params: {
-              sel: 'many'
-            }
+        const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
+          params: {
+            sel: 'many'
           }
-        )
+        })
 
         if (res.meta.status !== 200) {
           return this.$message.error('获取参数信息失败')
         }
 
         // 把字符串 attr_vals 转为数组
-        res.data.forEach((item) => {
+        res.data.forEach(item => {
           // 判断有无数据，防止空字符串被转为 [""]
           item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
         })
@@ -205,14 +194,11 @@ export default {
         console.log(this.manyTableData)
       } else if (this.activeIndex === '2') {
         // 如果进入商品静态属性栏'2'，查询参数列表
-        const { data: res } = await this.$http.get(
-          `categories/${this.cateId}/attributes`,
-          {
-            params: {
-              sel: 'only'
-            }
+        const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
+          params: {
+            sel: 'only'
           }
-        )
+        })
 
         if (res.meta.status !== 200) {
           return this.$message.error('获取参数信息失败')
@@ -234,7 +220,7 @@ export default {
       // 1.拿到图片的临时路径
       const picPath = file.response.data.tmp_path
       // 2.根据路径查找该图片在数组中的索引
-      const i = this.addForm.pics.findIndex((item) => item.pic === picPath)
+      const i = this.addForm.pics.findIndex(item => item.pic === picPath)
       // 3.用splice移除图片
       this.addForm.pics.splice(i, 1)
       // console.log(this.addForm)
@@ -249,7 +235,7 @@ export default {
     },
     addGoods() {
       // console.log(this.addForm)
-      this.$refs.addFormRef.validate(async (valid) => {
+      this.$refs.addFormRef.validate(async valid => {
         if (!valid) {
           return this.$message.error('请确认商品信息')
         }
@@ -260,14 +246,14 @@ export default {
         // console.log(this.onlyTableData) // 静态
         // 1、处理请求参数 attrs (两个对象，分别包含动静态参数的ID和val值)
         //    处理动态参数
-        this.manyTableData.forEach((item) => {
+        this.manyTableData.forEach(item => {
           this.addForm.attrs.push({
             attr_id: item.attr_id,
             attr_value: item.attr_vals.join(' ')
           })
         })
         //    处理静态参数
-        this.onlyTableData.forEach((item) => {
+        this.onlyTableData.forEach(item => {
           this.addForm.attrs.push({
             attr_id: item.attr_id,
             attr_value: item.attr_vals
@@ -324,14 +310,14 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
-  .el-checkbox {
-    margin: 0 10px 0 0 !important;
-  }
-  .previewImg {
-    width: 100%;
-  }
-  .el-button {
-    margin-top: 15px;
-  }
+<style lang="less" scoped>
+.el-checkbox {
+  margin: 0 10px 0 0 !important;
+}
+.previewImg {
+  width: 100%;
+}
+.el-button {
+  margin-top: 15px;
+}
 </style>

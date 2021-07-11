@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
-// 引入 element-ui 及其样式
+// 引入 element-ui 和自定义全局样式
 import './plugins/element.js'
 import './assets/css/global.css'
 
@@ -44,6 +44,7 @@ axios.interceptors.response.use(config => {
 // 全局注册 axios
 Vue.prototype.$http = axios
 
+// 浏览器控制台的提示信息是否开启
 Vue.config.productionTip = false
 
 // 全局注册运行依赖表格树插件：vue-table-with-tree-grid
@@ -53,13 +54,12 @@ Vue.component('tree-table', TableTree)
 Vue.use(VueQuillEditor)
 
 // 全局注册一个过滤器，处理时间格式
-Vue.filter('dateFormat', function (originTime) {
+Vue.filter('dateFormat', function(originTime) {
   const dt = new Date(originTime)
   const y = dt.getFullYear()
-  let m = (dt.getMonth() + 1)
+  let m = dt.getMonth() + 1
   m = m < 10 ? '0' + m : m
   const d = dt.getDate()
-
   let hh = dt.getHours()
   hh = hh < 10 ? '0' + hh : hh
   let mm = dt.getMinutes()

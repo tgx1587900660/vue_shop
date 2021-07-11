@@ -6,7 +6,10 @@ module.exports = {
     //   1.1 production(发布), 则打包入口文件为 src/main-prod.js
     config.when(process.env.NODE_ENV === 'production', config => {
       // 把默认入口移除( clear() ),再添加( add.() )
-      config.entry('app').clear().add('./src/main-prod.js')
+      config
+        .entry('app')
+        .clear()
+        .add('./src/main-prod.js')
 
       // webpack 的 externals 节点声明以下资源使用外部 CDN 加载
       config.set('externals', {
@@ -29,7 +32,10 @@ module.exports = {
 
     //   1.2 development(开发), 则打包入口文件为 src/main-dev.js
     config.when(process.env.NODE_ENV === 'development', config => {
-      config.entry('app').clear().add('./src/main-dev.js')
+      config
+        .entry('app')
+        .clear()
+        .add('./src/main-dev.js')
 
       // 自定义首页显示(开发模式)
       config.plugin('html').tap(args => {

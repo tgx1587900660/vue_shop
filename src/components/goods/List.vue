@@ -26,8 +26,8 @@
         <el-table-column label="商品价格（元）" prop="goods_price" width="95px"></el-table-column>
         <el-table-column label="商品重量" prop="goods_weight" width="70px"></el-table-column>
         <el-table-column label="创建时间" prop="add_time" width="160px">
-          <template v-slot:default='slotProps'>
-            {{slotProps.row.add_time|dateFormat}}
+          <template v-slot:default="slotProps">
+            {{ slotProps.row.add_time | dateFormat }}
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180px">
@@ -38,8 +38,7 @@
         </el-table-column>
       </el-table>
       <!-- 分页功能 -->
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 15, 20]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 15, 20]" :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total"> </el-pagination>
     </el-card>
   </div>
 </template>
@@ -97,15 +96,11 @@ export default {
     // 点击按钮删除商品
     async removeGoodById(id) {
       // console.log(id)
-      const confirmPromise = await this.$confirm(
-        '此操作将永久删除该商品, 是否继续?',
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).catch((err) => err)
+      const confirmPromise = await this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
       if (confirmPromise !== 'confirm') {
         return this.$message.info('取消删除参数')
       }
@@ -125,5 +120,4 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
-</style>
+<style lang="less" scoped></style>
